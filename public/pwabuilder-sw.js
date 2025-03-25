@@ -7,8 +7,15 @@ importScripts(
   "https://www.gstatic.com/firebasejs/11.0.2/firebase-messaging-compat.js"
 );
 
+console.log("self");
+console.log(self);
+console.log(self.self);
+
 self.addEventListener("install", function (e) {
   console.log("fcm service worker가 install.");
+
+  // ServiceWorkerGlobalScope.skipWaiting() 메소드는 waiting 상태의 서비스 워커를 active 상태의 서비스 워커로 변경하도록 강제한다.
+  // 제어중인 서비스 워커가 존재해도 대기 상태를 건너뛴다.
   self.skipWaiting();
 });
 

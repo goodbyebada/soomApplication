@@ -1,24 +1,24 @@
 import { loginUser } from "@apis/signup";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
-import { sendKeyToServer } from "@utils/registerServiceWorker";
+// import { sendKeyToServer } from "@utils/registerServiceWorker";
 
 export const LoginPage = () => {
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const accessToken = localStorage.getItem("accessToken");
+  // useEffect(() => {
+  //   const accessToken = localStorage.getItem("accessToken");
 
-    const afterLogin = async (accessToken: string | null) => {
-      if (accessToken) {
-        await sendKeyToServer(0);
-        navigate("/main");
-      }
-    };
+  //   const afterLogin = async (accessToken: string | null) => {
+  //     if (accessToken) {
+  //       await sendKeyToServer(0);
+  //       navigate("/main");
+  //     }
+  //   };
 
-    afterLogin(accessToken);
-  }, []);
+  //   // afterLogin(accessToken);
+  // }, []);
 
   const [inputValue, setInputValue] = useState({
     email: "",
