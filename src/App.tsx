@@ -13,11 +13,12 @@ import { AlarmAddPage } from "@pages/alarm/alarmAdd";
 import { AlarmEditPage } from "@pages/alarm/alarmEdit";
 import { useTabBarStore } from "@store/tabBarStore";
 import { useEffect, useState } from "react";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { useShallow } from "zustand/shallow";
 import ActionPage from "@pages/action/ActionPage";
 import { SettingPage } from "@pages/profile/setting/setting";
 import { ChangeInfoPage } from "@pages/profile/setting/changeinfo";
+import { generalSendKey } from "@utils/registerServiceWorker";
 
 function App() {
   const { isTabBarVisible } = useTabBarStore(
@@ -44,6 +45,12 @@ function App() {
     checkFirstVisit();
   }, []);
 
+  useEffect(() => {
+    const handle = async () => await generalSendKey();
+
+    handle();
+  }, []);
+
   return (
     <BrowserRouter>
       <Layout>
@@ -53,7 +60,7 @@ function App() {
           <>
             <Routes>
               {/* 토큰 없으면 login으로 리다이렉트 */}
-              <Route path="/" element={<Navigate to="/login" />} />
+              {/* <Route path="/" element={<Navigate to="/login" />} /> */}
 
               {/* 알림 받은 후 실제 실행 페이지 */}
               <Route path="/action" element={<ActionPage />} />

@@ -1,18 +1,17 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getMessaging } from "firebase/messaging";
-
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyDSqU0TbdqtY8Ji67b4MeZleWcep9NAm8c",
-  authDomain: "http://hy-thon-team-4.firebaseapp.com",
-  projectId: "hy-thon-team-4",
-  storageBucket: "hy-thon-team-4.firebasestorage.app",
-  messagingSenderId: "463766640178",
-  appId: "1:463766640178:web:a9833194904c7e53c60e2b",
+  apiKey: "AIzaSyBbuPAl1pe1KJNF7F3XHZu4jgUVlWhZ76M",
+  authDomain: "soom-refactor.firebaseapp.com",
+  projectId: "soom-refactor",
+  storageBucket: "soom-refactor.firebasestorage.app",
+  messagingSenderId: "957533905906",
+  appId: "1:957533905906:web:93f4b3b5db5edc77f3416b",
 };
 
 // Initialize Firebase
