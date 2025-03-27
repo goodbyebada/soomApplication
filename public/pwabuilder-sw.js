@@ -7,10 +7,6 @@ importScripts(
   "https://www.gstatic.com/firebasejs/11.0.2/firebase-messaging-compat.js"
 );
 
-console.log("self");
-console.log(self);
-console.log(self.self);
-
 self.addEventListener("install", function (e) {
   console.log("fcm service worker가 install.");
 

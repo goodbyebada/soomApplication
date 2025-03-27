@@ -4,48 +4,72 @@ import { getToken } from "firebase/messaging";
 
 // let count = 0;
 // const retryCount = 10;
+const vapidKey = import.meta.env.VITE_VAPID_KEY;
 
-export const registerServiceWorker = async () => {
-  try {
-    const registration: ServiceWorkerRegistration =
-      await navigator.serviceWorker.register("/pwabuilder-sw.js", {
-        scope: "firebase-messaging",
+// export const registerServiceWorker = async () => {
+//   try {
+//     const registration: ServiceWorkerRegistration =
+//       await navigator.serviceWorker.register("/pwabuilder-sw.js", {
+//         scope: "firebase-messaging",
+//       });
+
+//     if (registration) {
+//       return registration;
+//     } else {
+//       throw new Error(`registration is ${registration}`);
+//     }
+//   } catch (error) {
+//     console.error("Service Worker registration failed:", error);
+//   }
+// };
+
+async function registerReady(scriptURL: string, options?: RegistrationOptions) {
+  return navigator.serviceWorker
+    .register(scriptURL, options)
+    .then((registration) => {
+      // If there is an active worker and nothing incoming, we are done.
+      const incomingSw = registration.installing || registration.waiting;
+      if (registration.active && !incomingSw)
+        return Promise.resolve(registration);
+
+      // If not, wait for the newest service worker to become activated.
+      return new Promise<ServiceWorkerRegistration>((fulfill, reject) => {
+        if (incomingSw) {
+          incomingSw.onstatechange = (evt) => {
+            if ((evt.target as ServiceWorker)?.state === "activated") {
+              incomingSw.onstatechange = null;
+              return fulfill(registration);
+            }
+          };
+        } else {
+          reject(new Error("No incoming service worker found."));
+        }
       });
-
-    if (registration) {
-      return registration;
-    } else {
-      throw new Error(`registration is ${registration}`);
-    }
-  } catch (error) {
-    console.error("Service Worker registration failed:", error);
-  }
-};
+    })
+    .catch((err) => {
+      console.error("Error registering service worker:", err);
+      return Promise.reject(err);
+    });
+}
 
 export async function generalSendKey() {
   try {
-    const registration = await registerServiceWorker();
+    const readyRegistration = await registerReady("/pwabuilder-sw.js", {
+      scope: "firebase-messaging",
+    });
 
-    const vapidKey = import.meta.env.VITE_VAPID_KEY;
 
-    // registration이 있다면
-    if (registration) {
-      //그래도 에러 나야함 activate 되지 않았다면
+    if (readyRegistration) {
+      const token = await getToken(messaging, {
+        vapidKey,
+        serviceWorkerRegistration: readyRegistration,
+      });
 
-      console.log(registration);
-      console.log(registration.active);
-      if (registration.active) {
-        const token = await getToken(messaging, {
-          vapidKey,
-          serviceWorkerRegistration: registration,
-        });
-
-        if (token) {
-          console.log("FCM Token:", token);
-        }
-      } else {
-        throw new Error("token invalid");
+      if (token) {
+        console.log("FCM Token:", token);
       }
+    } else {
+      throw new Error("token invalid");
     }
   } catch (e) {
     console.error(e);
