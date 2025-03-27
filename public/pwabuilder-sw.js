@@ -20,6 +20,8 @@ self.addEventListener("install", function (e) {
 });
 
 self.addEventListener("activate", function (e) {
+  // console.log(self.clients);
+  // e.waitUntil(self.clients.claim());
   console.log("fcm service worker가 activate.");
 });
 

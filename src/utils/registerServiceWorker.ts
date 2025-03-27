@@ -42,29 +42,11 @@ export async function generalSendKey() {
 
         if (token) {
           console.log("FCM Token:", token);
-        } else {
-          throw new Error("token invalid");
         }
+      } else {
+        throw new Error("token invalid");
       }
     }
-
-    // // active의 상태
-    // if (registration?.active) {
-    //   console.log("active.state");
-    //   console.log(registration?.active.state);
-    //   const token = await getToken(messaging, {
-    //     vapidKey,
-    //     serviceWorkerRegistration: registration,
-    //   });
-
-    //   if (token) {
-    //     console.log("FCM Token:", token);
-    //   }
-
-    //   // const response = await fcmTokenRegister({ fcmToken: token });
-    // } else {
-    //   throw new Error("token invalid");
-    // }
   } catch (e) {
     console.error(e);
   }
